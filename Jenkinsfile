@@ -6,8 +6,13 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/yourusername/assignment1-node-app.git'
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/yourusername/02230297_Assignment_2_DSO101.git'
+                    ]]
+                ])
             }
         }
         stage('Install') {
