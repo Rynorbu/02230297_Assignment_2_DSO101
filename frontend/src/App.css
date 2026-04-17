@@ -1,0 +1,879 @@
+/* ===== Variables ===== */
+:root {
+  --white: #ffffff;
+  --black: #000000;
+  --gray-50: #fafafa;
+  --gray-100: #f5f5f5;
+  --gray-200: #e5e5e5;
+  --gray-300: #d4d4d4;
+  --gray-400: #a3a3a3;
+  --gray-500: #737373;
+  --gray-600: #525252;
+  --gray-700: #404040;
+  --gray-800: #262626;
+  --gray-900: #171717;
+  --danger: #dc2626;
+  --danger-light: #fef2f2;
+  --success: #16a34a;
+  --success-light: #f0fdf4;
+}
+
+/* ===== Base Styles ===== */
+.App {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f5f5 0%, #fafafa 100%);
+  padding: 50px 20px;
+}
+
+.container {
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+/* ===== Header ===== */
+.app-header {
+  margin-bottom: 50px;
+  background: var(--black);
+  border-radius: 20px;
+  padding: 40px 32px;
+  color: var(--white);
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.header-content {
+  flex: 1;
+}
+
+.app-header h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+  text-align: left;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  text-align: left;
+  display: block;
+}
+
+/* ===== Error Message ===== */
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-left: 4px solid var(--danger);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 24px;
+  color: var(--gray-700);
+  font-size: 0.9rem;
+}
+
+.error-message svg {
+  color: var(--danger);
+  flex-shrink: 0;
+}
+
+/* ===== Form ===== */
+.todo-form {
+  background: var(--white);
+  border: none;
+  border-radius: 20px;
+  padding: 32px;
+  margin-bottom: 40px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.todo-form:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.todo-form h2 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.input-field {
+  width: 100%;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 12px;
+  background: var(--white);
+  color: var(--black);
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s ease;
+  margin-bottom: 12px;
+}
+
+.input-field::placeholder {
+  color: var(--gray-400);
+}
+
+.input-field:focus {
+  border-color: var(--black);
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.08);
+  background: #fafafa;
+}
+
+.textarea-field {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+/* ===== Form Row ===== */
+.form-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* ===== Dropdown Icon Button ===== */
+.dropdown-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  background: var(--gray-100);
+  border: none;
+  border-radius: 14px;
+  color: var(--gray-700);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+.dropdown-icon-btn:hover {
+  background: var(--gray-200);
+  color: var(--black);
+  transform: scale(1.05);
+}
+
+.dropdown-icon-btn:active {
+  transform: scale(0.98);
+}
+
+/* ===== Dropdown Toggle Button ===== */
+.dropdown-toggle-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  color: var(--gray-600);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.dropdown-toggle-btn:hover {
+  background: var(--gray-100);
+  border-color: var(--gray-300);
+  color: var(--black);
+}
+
+.chevron-icon {
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.chevron-icon.open {
+  transform: rotate(180deg);
+}
+
+/* ===== Buttons ===== */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 14px 20px;
+  background: var(--black);
+  color: var(--white);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--gray-800);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn-add {
+  flex: 1;
+  padding: 12px 24px !important;
+  white-space: nowrap;
+}
+
+.btn-sm {
+  padding: 10px 14px;
+  font-size: 0.85rem;
+}
+
+.btn-success {
+  background: var(--black);
+  color: var(--white);
+}
+
+.btn-success:hover:not(:disabled) {
+  background: var(--gray-800);
+}
+
+.btn-secondary {
+  background: var(--gray-100);
+  color: var(--gray-700);
+  border: 1px solid var(--gray-200);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--gray-200);
+}
+
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: var(--gray-100);
+  color: var(--gray-600);
+  border-radius: 10px;
+}
+
+.btn-icon:hover:not(:disabled) {
+  background: var(--gray-200);
+  color: var(--black);
+}
+
+.btn-icon-danger:hover:not(:disabled) {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+/* ===== Todos Section ===== */
+.todos-section {
+  margin-top: 20px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.section-header h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--black);
+  letter-spacing: -0.01em;
+}
+
+.todo-count {
+  background: var(--black);
+  color: var(--white);
+  border-radius: 12px;
+  padding: 8px 16px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ===== Filter Tabs ===== */
+.filter-tabs {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--gray-200);
+  padding-bottom: 12px;
+}
+
+.filter-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 12px 0;
+  margin-bottom: -14px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--gray-500);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  white-space: nowrap;
+}
+
+.filter-tab:hover {
+  color: var(--gray-700);
+}
+
+.filter-tab.active {
+  color: var(--black);
+  border-bottom: 3.5px solid var(--black);
+  margin-bottom: -14px;
+}
+
+.filter-tab svg {
+  transition: color 0.3s ease;
+}
+
+/* ===== Loading & Empty State ===== */
+.loading,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: var(--white);
+  border: 2px dashed var(--gray-200);
+  border-radius: 16px;
+  padding: 48px 24px;
+  color: var(--gray-500);
+  text-align: center;
+}
+
+.loading {
+  flex-direction: row;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--gray-200);
+  border-top-color: var(--black);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes subtle-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.empty-state svg {
+  color: var(--gray-300);
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-top: 4px;
+}
+
+.empty-state span {
+  font-size: 0.9rem;
+  color: var(--gray-400);
+}
+
+/* ===== Todo List ===== */
+.todos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.todo-item {
+  background: var(--white);
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+}
+
+.todo-item:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.todo-item.completed {
+  background: var(--gray-50);
+  opacity: 0.85;
+}
+
+.todo-item.completed .todo-text h3,
+.todo-item.completed .todo-description {
+  color: var(--gray-400);
+}
+
+/* ===== Todo Row ===== */
+.todo-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  gap: 16px;
+}
+
+/* ===== Todo Content ===== */
+.todo-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ===== Todo Actions ===== */
+.todo-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.todo-item:hover .todo-actions {
+  opacity: 1;
+}
+
+/* ===== Checkbox Button ===== */
+.checkbox-btn {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border: 2px solid var(--gray-300);
+  border-radius: 8px;
+  background: var(--white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  margin-top: 2px;
+}
+
+.checkbox-btn:hover {
+  border-color: var(--black);
+}
+
+.checkbox-btn.checked {
+  background: var(--black);
+  border-color: var(--black);
+  color: var(--white);
+}
+
+/* ===== Todo Text ===== */
+.todo-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.todo-text h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+}
+
+.todo-description {
+  font-size: 0.9rem;
+  color: var(--gray-600);
+  line-height: 1.5;
+  margin-bottom: 8px;
+  white-space: pre-wrap;
+  font-weight: 500;
+}
+
+.todo-date {
+  font-size: 0.8rem;
+  color: var(--gray-500);
+  font-weight: 500;
+}
+
+/* ===== Edit Form ===== */
+.edit-form {
+  padding: 20px;
+  background: var(--gray-50);
+}
+
+.edit-form .input-field {
+  background: var(--white);
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+/* ===== Stats Button & Modal ===== */
+.stats-button-container {
+  position: relative;
+}
+
+.stats-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: var(--black);
+  color: var(--white);
+  border: 2px solid transparent;
+  border-radius: 16px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 700;
+  min-width: 130px;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  animation: subtle-pulse 2s ease-in-out infinite;
+}
+
+.stats-button:hover {
+  background: var(--gray-800);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.stats-button::after {
+  content: 'Click to view statistics';
+  position: absolute;
+  bottom: -36px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--black);
+  color: var(--white);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.stats-button:hover::after {
+  opacity: 1;
+  visibility: visible;
+  bottom: -40px;
+}
+
+.stats-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.stats-mini {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  font-size: 0.75rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.stats-modal {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 12px;
+  z-index: 1000;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Old stats styles - no longer used with new component */
+.stats-modal-content,
+.stats-modal-header,
+.stats-modal-header h3,
+.close-btn,
+.stats-grid,
+.stat-card,
+.stat-icon,
+.total-icon,
+.completed-icon,
+.pending-icon,
+.stat-info,
+.stat-title,
+.stat-number,
+.progress-section,
+.progress-header,
+.progress-percentage,
+.progress-bar,
+.progress-fill {
+  /* Styles now handled by TaskStatistics component */
+}
+
+/* ===== Footer ===== */
+.app-footer {
+  margin-top: 40px;
+  text-align: center;
+  color: var(--gray-400);
+  font-size: 0.85rem;
+}
+
+.app-footer code {
+  background: var(--gray-100);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: var(--gray-600);
+}
+
+/* ===== Confirmation Modal ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.confirmation-modal {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 24px 28px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.warning-icon {
+  background: rgba(220, 38, 38, 0.1);
+  color: var(--danger);
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--black);
+  margin: 0 0 12px 0;
+}
+
+.modal-message {
+  font-size: 0.95rem;
+  color: var(--gray-600);
+  margin: 0 0 28px 0;
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn-danger {
+  background: var(--black);
+  color: var(--white);
+  padding: 10px 24px;
+  min-width: 100px;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: var(--gray-800);
+  transform: translateY(-1px);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 640px) {
+  .App {
+    padding: 24px 16px;
+  }
+
+  .header-top {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .app-header h1 {
+    font-size: 2rem;
+  }
+
+  .stats-button {
+    width: 100%;
+    flex-direction: row;
+  }
+
+  .stats-modal {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 16px 16px 0 0;
+    min-width: unset;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  .todo-form {
+    padding: 20px;
+  }
+
+  .section-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .filter-tabs {
+    gap: 16px;
+  }
+
+  .filter-tab {
+    padding: 10px 0;
+    font-size: 0.9rem;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .btn-add {
+    width: 100% !important;
+  }
+
+  .todo-row {
+    padding: 14px 16px;
+  }
+}
