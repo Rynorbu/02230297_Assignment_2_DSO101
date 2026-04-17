@@ -32,7 +32,7 @@
 
 ---
 
-## Jenkinsfile Stages
+## Jenkinsfile Stages - Dual Deployment
 
 ### 1. **Checkout Stage**
 ```groovy
@@ -42,19 +42,13 @@ Branch: */main
 ```
 ✅ Automatically fetches code on every build
 
-### 2. **Install Stage**
+### 2. **Install Dependencies Stage**
 ```groovy
 sh 'npm install'
 ```
-✅ Installs all dependencies from package.json
+✅ Installs root dependencies for testing
 
-### 3. **Build Stage**
-```groovy
-sh 'npm run build'
-```
-✅ Executes custom build script (runs index.js)
-
-### 4. **Test Stage**
+### 3. **Run Tests Stage**
 ```groovy
 sh 'npm test'
 Post-action: Publishes junit.xml test results
@@ -62,13 +56,57 @@ Post-action: Publishes junit.xml test results
 ✅ Runs Jest tests with JUnit reporter
 ✅ Test results visible in Jenkins dashboard
 
-### 5. **Deploy Stage**
+### 4. **Build Backend Image Stage**
 ```groovy
-docker build -t rynorbu/taskflow-app:latest .
-docker push rynorbu/taskflow-app:latest
+docker build -t YOUR_USERNAME/taskflow-backend:latest ./backend
 ```
-✅ Builds Docker image
-✅ Pushes to Docker Hub registry
+✅ Builds backend Docker image from ./backend/Dockerfile
+✅ Tags with your Docker Hub username
+
+### 5. **Build Frontend Image Stage**
+```groovy
+docker build -t YOUR_USERNAME/taskflow-frontend:latest ./frontend
+```
+✅ Builds frontend Docker image from ./frontend/Dockerfile
+✅ Tagged separately from backend
+
+### 6. **Push Backend to Docker Hub Stage**
+```groovy
+docker push YOUR_USERNAME/taskflow-backend:latest
+```
+✅ Pushes backend image to Docker Hub
+✅ Available at: https://hub.docker.com/r/YOUR_USERNAME/taskflow-backend
+
+### 7. **Push Frontend to Docker Hub Stage**
+```groovy
+docker push YOUR_USERNAME/taskflow-frontend:latest
+```
+✅ Pushes frontend image to Docker Hub
+✅ Available at: https://hub.docker.com/r/YOUR_USERNAME/taskflow-frontend
+
+---
+
+## Docker Hub Deployment Strategy
+
+### **Separate Repositories:**
+
+**Backend Repository:**
+- Image: `YOUR_USERNAME/taskflow-backend:latest`
+- Contains: Node.js Express API + PostgreSQL connection
+- Port: 5000
+- URL: `https://hub.docker.com/r/YOUR_USERNAME/taskflow-backend`
+
+**Frontend Repository:**
+- Image: `YOUR_USERNAME/taskflow-frontend:latest`
+- Contains: React application served by Nginx
+- Port: 3000 (dev) / 80 (prod)
+- URL: `https://hub.docker.com/r/YOUR_USERNAME/taskflow-frontend`
+
+### **Benefits:**
+✅ Independent deployment and scaling
+✅ Teams can work on frontend and backend separately
+✅ Easy to update one without affecting the other
+✅ Production-grade microservices architecture
 
 ---
 
@@ -93,20 +131,43 @@ docker push rynorbu/taskflow-app:latest
 
 ---
 
+## Complete Setup Instructions
+
+### **📋 Follow this guide:** [DOCKER_HUB_SETUP.md](./DOCKER_HUB_SETUP.md)
+
+This comprehensive guide covers:
+1. Creating Docker Hub account
+2. Creating two repositories (frontend & backend)
+3. Generating access token
+4. Adding credentials to Jenkins
+5. Updating Jenkinsfile with your username
+
+---
+
 ## How to Run the Pipeline
 
 ### Step 1: Jenkins Setup
 1. Install Jenkins from jenkins.io
-2. Install required plugins (NodeJS, Pipeline, GitHub, Docker)
-3. Configure Node.js in Manage Jenkins > Tools
+2. Install required plugins:
+   - NodeJS Plugin
+   - Pipeline
+   - GitHub Integration
+   - Docker Pipeline
+3. Configure Node.js in Manage Jenkins > Tools > NodeJS
 
 ### Step 2: GitHub Setup
 1. Create GitHub Personal Access Token
-2. Add to Jenkins Credentials with ID: `github-pat`
+2. Add to Jenkins > Credentials with ID: `github-pat`
 
-### Step 3: Docker Hub Setup (Optional)
-1. Create Docker Hub account
-2. Add credentials to Jenkins with ID: `docker-hub-creds`
+### Step 3: Docker Hub Setup ⭐ REQUIRED
+1. **Read:** [DOCKER_HUB_SETUP.md](./DOCKER_HUB_SETUP.md)
+2. Create Docker Hub account
+3. Create two repositories:
+   - `taskflow-backend`
+   - `taskflow-frontend`
+4. Generate access token
+5. Add Jenkins credentials with ID: `docker-hub-creds`
+6. **Update Jenkinsfile:** Replace `your-dockerhub-username` with YOUR username
 
 ### Step 4: Run Pipeline
 1. In Jenkins: Create New Item > Pipeline
