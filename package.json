@@ -1,0 +1,27 @@
+{
+  "name": "task-flow-app",
+  "version": "1.0.0",
+  "description": "Complete task management application with backend and frontend",
+  "private": true,
+  "scripts": {
+    "test": "jest --ci --reporters=default --reporters=jest-junit",
+    "build": "node index.js",
+    "backend": "cd backend && npm install && npm start",
+    "frontend": "cd frontend && npm install && npm start",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "keywords": [
+    "task",
+    "todo",
+    "react",
+    "express",
+    "postgresql"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "jest-junit": "^16.0.0",
+    "concurrently": "^8.0.0"
+  }
+}
