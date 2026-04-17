@@ -4,7 +4,7 @@ pipeline {
         nodejs 'NodeJS'
     }
     environment {
-        DOCKER_USERNAME = 'your-dockerhub-username'  // ← REPLACE WITH YOUR USERNAME
+        DOCKER_USERNAME = 'rynorbu11'
         BACKEND_IMAGE = "${DOCKER_USERNAME}/taskflow-backend:latest"
         FRONTEND_IMAGE = "${DOCKER_USERNAME}/taskflow-frontend:latest"
         DOCKER_CREDENTIALS = 'docker-hub-creds'  // Jenkins credential ID
