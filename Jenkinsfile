@@ -35,5 +35,22 @@ pipeline {
                 }
             }
         }
+        stage('Deploy') {
+            steps {
+                script {
+                    // Build Docker image
+                    sh 'docker build -t rynorbu/taskflow-app:latest .'
+                    
+                    // Push to Docker Hub (requires credentials)
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh '''
+                            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                            docker push rynorbu/taskflow-app:latest
+                            docker logout
+                        '''
+                    }
+                }
+            }
+        }
     }
 }
