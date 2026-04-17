@@ -23,12 +23,12 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                bat 'npm install'
             }
         }
         stage('Run Tests') {
             steps {
-                sh 'npm test'
+                bat 'npm test'
             }
             post {
                 always {
@@ -39,14 +39,14 @@ pipeline {
         stage('Build Backend Image') {
             steps {
                 script {
-                    sh "docker build -t ${BACKEND_IMAGE} ./backend"
+                    bat "docker build -t ${BACKEND_IMAGE} ./backend"
                 }
             }
         }
         stage('Build Frontend Image') {
             steps {
                 script {
-                    sh "docker build -t ${FRONTEND_IMAGE} ./frontend"
+                    bat "docker build -t ${FRONTEND_IMAGE} ./frontend"
                 }
             }
         }
@@ -54,8 +54,8 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh '''
-                            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                        bat '''
+                            docker login -u %DOCKER_USER% -p %DOCKER_PASS%
                             docker push ''' + "${BACKEND_IMAGE}" + '''
                             docker logout
                         '''
@@ -67,8 +67,8 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh '''
-                            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                        bat '''
+                            docker login -u %DOCKER_USER% -p %DOCKER_PASS%
                             docker push ''' + "${FRONTEND_IMAGE}" + '''
                             docker logout
                         '''
