@@ -209,6 +209,68 @@ java -jar jenkins.war --enable-future-java
 
 This allowed Jenkins to run on Java 24 while acknowledging that it is not fully supported but functional for development purposes. For production environments, installing Java 21 LTS would be the recommended approach.
 
+## Evidence and Screenshots
+
+This section provides photographic evidence of successful pipeline execution, testing, and deployment.
+
+### Jenkins Pipeline Execution Evidence
+
+Screenshot 1: Jenkins Build Success Overview
+Description: Demonstrates successful completion of the entire CI/CD pipeline build. The screenshot shows build number #3 (or later) with a blue checkmark indicator confirming successful execution. The page displays the build timestamp, total execution duration, and build status as "SUCCESS". This evidence proves that the pipeline executed completely without failures.
+
+Expected Content: Build status indicator in blue, build number, timestamp of execution, duration in seconds
+
+Screenshot 2: Jenkins Pipeline Stages Visualization
+Description: Shows the seven-stage pipeline architecture with all stages executed successfully. Each stage displays a green status indicator confirming completion. The stages are shown in execution order: Checkout, Install Dependencies, Run Tests, Build Backend Image, Build Frontend Image, Push Backend to Docker Hub, and Push Frontend to Docker Hub. This visualization provides clear evidence of the automated workflow.
+
+Expected Content: Seven boxes/stages all in green, stage names clearly visible, execution timestamps for each stage
+
+Screenshot 3: Jest Test Results in Jenkins Dashboard
+Description: Provides evidence that the automated testing framework executed successfully. The screenshot shows the JUnit test report published to Jenkins displaying: total tests count of 1, tests passed count of 1, tests failed count of 0, and complete execution time in milliseconds. The test result page confirms that app.test.js passed validation.
+
+Expected Content: Test report summary, passing test count, no failing tests, JUnit report details, execution duration
+
+Screenshot 4: Jenkins Console Output Log
+Description: Shows the complete execution log from the Jenkins console output. The screenshot captures key execution markers including: npm install execution with package count, npm test output showing the test passing with checkmark symbol, Docker build commands for both backend and frontend, and Docker push commands with successful uploads. This provides detailed evidence of each stage execution.
+
+Expected Content: Console text showing npm install output, test passing, docker build progress, push confirmation messages
+
+### Docker Hub Deployment Evidence
+
+Screenshot 5: Docker Hub Backend Repository
+Description: Provides evidence that the backend Docker image was successfully pushed to Docker Hub. The screenshot shows the Docker Hub repository page for taskflow-backend displaying the repository name, tag name as "latest", image size, last updated timestamp, and pull count. The metadata confirms successful image deployment and availability.
+
+Expected Content: Repository name "taskflow-backend", tag "latest", last updated date/time, image information, pull/star counts
+
+Screenshot 6: Docker Hub Frontend Repository
+Description: Provides evidence that the frontend Docker image was successfully pushed to Docker Hub. The screenshot shows the Docker Hub repository page for taskflow-frontend displaying repository name, tag "latest", image metadata, last updated timestamp, and availability status. Both repositories demonstrate successful dual deployment strategy.
+
+Expected Content: Repository name "taskflow-frontend", tag "latest", last updated date/time, image information, availability status
+
+### GitHub Repository Evidence
+
+Screenshot 7: GitHub Repository Overview
+Description: Shows the GitHub repository https://github.com/Rynorbu/02230297_Assignment_2_DSO101 with all project files visible. The screenshot displays the repository structure including Jenkinsfile, README.md, package.json, backend directory, and frontend directory. The "main" branch is selected confirming code is on the correct branch. The commit history shows multiple commits documenting the development process.
+
+Expected Content: Repository name, file listing with Jenkinsfile visible, branch selector showing "main", commit count, last commit timestamp
+
+Screenshot 8: Jenkinsfile Source Code in GitHub
+Description: Displays the complete Jenkinsfile source code as stored in the GitHub repository. The screenshot shows all seven stages clearly visible in the Groovy pipeline syntax: Checkout, Install Dependencies, Run Tests, Build Backend Image, Build Frontend Image, Push Backend to Docker Hub, and Push Frontend to Docker Hub. Environment variables including DOCKER_USERNAME, BACKEND_IMAGE, and FRONTEND_IMAGE are visible.
+
+Expected Content: Jenkinsfile line numbers, all 7 stages with stage names, environment variable declarations, Groovy syntax highlighting
+
+### Evidence Summary Table
+
+Evidence Item | Source | Status | Link
+---|---|---|---
+Build Success | Jenkins | Complete | http://localhost:8080/job/todo-pipeline/
+Test Results | Jenkins Dashboard | Passed | In console output
+Backend Image | Docker Hub | Deployed | https://hub.docker.com/r/rynorbu11/taskflow-backend
+Frontend Image | Docker Hub | Deployed | https://hub.docker.com/r/rynorbu11/taskflow-frontend
+Repository | GitHub | Active | https://github.com/Rynorbu/02230297_Assignment_2_DSO101
+Jenkinsfile | GitHub | Published | https://github.com/Rynorbu/02230297_Assignment_2_DSO101/blob/main/Jenkinsfile
+Documentation | This Report | Complete | README.md
+
 ## Deliverables and Screenshots
 
 ### Screenshots Provided
@@ -334,7 +396,7 @@ The project successfully fulfills all requirements for the DSO101 assignment and
 
 ## Repository Links
 
-GitHub Repository: https://github.com/Rynorbu/02230297_Assignment_2_DSO101
+- GitHub Repository: https://github.com/Rynorbu/02230297_Assignment_2_DSO101
 Docker Hub Backend: https://hub.docker.com/r/rynorbu11/taskflow-backend
 Docker Hub Frontend: https://hub.docker.com/r/rynorbu11/taskflow-frontend
 Jenkins Server: http://localhost:8080 (local access)
