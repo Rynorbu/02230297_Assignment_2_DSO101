@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-This report documents the successful implementation of a Continuous Integration and Continuous Deployment (CI/CD) pipeline for the TaskFlow application using Jenkins. The pipeline automates the build, test, and deployment process, ensuring code quality and consistency. The application is containerized using Docker and deployed to Docker Hub for production use.
+This report documents the successful implementation of a Continuous Integration and Continuous Deployment (CI/CD) pipeline for the TaskFlow application using Jenkins. The pipeline automates the build, test, and delivery process, ensuring code quality and consistency. The application is containerized using Docker and deployed to Docker Hub for production use.
 
 ## Project Overview
 
@@ -43,69 +43,84 @@ Plugins Installed:
 
 The Jenkins pipeline executes seven sequential stages to automate the entire CI/CD workflow:
 
-Stage 1: Checkout
-This stage clones the source code from the GitHub repository on the main branch. It establishes connection using GitHub credentials and fetches the latest commit. The checkout ensures that Jenkins has the most recent code version before proceeding to build and test stages. Repository URL is configured as: https://github.com/Rynorbu/02230297_Assignment_2_DSO101.git
+**Stage 1: Checkout**
 
-Stage 2: Install Dependencies
+This stage clones the source code from the GitHub repository on the main branch. It establishes connection using GitHub credentials and fetches the latest commit. The checkout ensures that Jenkins has the most recent code version before proceeding to build and test stages. Repository URL is configured as: **https://github.com/Rynorbu/02230297_Assignment_2_DSO101.git**
+
+**Stage 2: Install Dependencies**
+
 npm install command is executed to download and install all required Node.js packages defined in package.json files. This stage ensures that all project dependencies including Jest testing framework and jest-junit reporter are available before testing. The installation occurs at the root level to prepare the project environment.
 
-Stage 3: Run Tests
-The testing stage executes the Jest test suite with the command: npm test. This command runs Jest in continuous integration mode with two reporters: default console output and jest-junit for XML report generation. The JUnit XML report is automatically published to the Jenkins dashboard, making test results visible in the Jenkins UI. The test results are recorded and make the build fail if any tests fail.
+**Stage 3: Run Tests**
 
-Stage 4: Build Backend Image
+The testing stage executes the Jest test suite with the command: **npm test**. This command runs Jest in continuous integration mode with two reporters: default console output and jest-junit for XML report generation. The JUnit XML report is automatically published to the Jenkins dashboard, making test results visible in the Jenkins UI. The test results are recorded and make the build fail if any tests fail.
+
+**Stage 4: Build Backend Image**
+
 Docker builds the backend container image using the Dockerfile in the ./backend directory. The image is tagged as rynorbu11/taskflow-backend:latest using the Docker Hub username. This stage compiles the Node.js Express application and prepares it for containerization. The Docker build context includes all backend source code and dependencies.
 
-Stage 5: Build Frontend Image
+**Stage 5: Build Frontend Image**
+
 Docker builds the frontend container image using the Dockerfile in the ./frontend directory. This is a multi-stage build that first compiles the React application and then serves it using Nginx. The image is tagged as rynorbu11/taskflow-frontend:latest. The frontend image contains the optimized production build of the React application.
 
-Stage 6: Push Backend to Docker Hub
-The backend image is authenticated using Docker Hub credentials stored securely in Jenkins and pushed to the Docker Hub repository. Docker login uses the credentials with the command: docker login -u username -p password. After successful authentication, the image is pushed to: https://hub.docker.com/r/rynorbu11/taskflow-backend
+**Stage 6: Push Backend to Docker Hub**
 
-Stage 7: Push Frontend to Docker Hub
-Similarly, the frontend image is pushed to Docker Hub after authentication. The image is available at: https://hub.docker.com/r/rynorbu11/taskflow-frontend
+The backend image is authenticated using Docker Hub credentials stored securely in Jenkins and pushed to the Docker Hub repository. Docker login uses the credentials with the command: docker login -u username -p password. After successful authentication, the image is pushed to: **https://hub.docker.com/r/rynorbu11/taskflow-backend/tags**
 
-### Testing Framework Implementation
+**Stage 7: Push Frontend to Docker Hub**
 
-Jest Testing Configuration:
-npm package: jest version 29.5.0
-npm package: jest-junit version 16.0.0
+Similarly, the frontend image is pushed to Docker Hub after authentication. The image is available at: **https://hub.docker.com/r/rynorbu11/taskflow-frontend/tags**
 
-The package.json test script is configured as follows:
+### **Testing Framework Implementation**
+
+**Jest Configuration:**
+- Jest Version: 29.5.0 - JavaScript testing framework
+- jest-junit Version: 16.0.0 - JUnit XML report generator for Jenkins
+
+**Test Command:**
+```json
 "test": "jest --ci --reporters=default --reporters=jest-junit"
+```
 
-The --ci flag runs Jest in continuous integration mode. The --reporters parameter specifies two output formats: default for console output and jest-junit for JUnit XML report generation. The junit.xml file is generated in the project root and published to Jenkins.
+**Command Flags:**
+- `--ci`: Continuous Integration mode (optimized for Jenkins)
+- `--reporters=default`: Console output for logs
+- `--reporters=jest-junit`: Generates junit.xml for Jenkins dashboard
 
-Test File Structure:
-Location: app.test.js in project root
-Framework: Jest with standard test syntax
-Test Implementation:
-test('todo app test', () => {
-  expect(true).toBe(true);
-});
+**Test File:**
+- Location: app.test.js
+- Current Test: Validates Jest framework integration
+- Results: 1 test executed, 1 passed, 0 failed
 
-This test validates that the Jest testing framework is properly configured and executing within the Jenkins pipeline. While this is a basic test, it demonstrates the full testing infrastructure preparation for future test cases.
+**Test Execution Flow:**
+1. Runs in "Run Tests" stage after dependencies install
+2. Generates junit.xml report
+3. Jenkins publishes results to dashboard
+4. Failed tests block pipeline progression
 
 ### Docker Hub Deployment Strategy
 
 The deployment utilizes separate Docker Hub repositories for independent scaling and management:
 
-Backend Repository:
-Repository Name: taskflow-backend
-Image URL: https://hub.docker.com/r/rynorbu11/taskflow-backend
-Tag: latest
-Purpose: Contains Node.js Express API
-Port: 5000
-Technology: Node.js 18-alpine base image
+**Backend Repository:**
 
-Frontend Repository:
-Repository Name: taskflow-frontend
-Image URL: https://hub.docker.com/r/rynorbu11/taskflow-frontend
-Tag: latest
-Purpose: Contains React application with Nginx
-Port: 80 (production) / 3000 (development)
-Technology: Multi-stage build with Nginx service
+- Repository Name: taskflow-backend
+- Image URL: **https://hub.docker.com/r/rynorbu11/taskflow-backend/tags**
+- Tag: latest
+- Purpose: Contains Node.js Express API
+- Port: 5000
+- Technology: Node.js 18-alpine base image
 
-Benefits of Separate Repositories:
+**Frontend Repository:**
+
+- Repository Name: taskflow-frontend
+- Image URL: **https://hub.docker.com/r/rynorbu11/taskflow-frontend/tags**
+- Tag: latest
+- Purpose: Contains React application with Nginx
+- Port: 80 (production) / 3000 (development)
+- Technology: Multi-stage build with Nginx service
+
+**Benefits of Separate Repositories:**
 - Independent deployment without affecting other components
 - Separate versioning and release cycles
 - Enables team-based microservices architecture
@@ -116,22 +131,21 @@ Benefits of Separate Repositories:
 
 The Jenkinsfile uses the following environment variables that should be configured:
 
-DOCKER_USERNAME: Set to 'rynorbu11' (your Docker Hub username)
-BACKEND_IMAGE: Automatically set as rynorbu11/taskflow-backend:latest
-FRONTEND_IMAGE: Automatically set as rynorbu11/taskflow-frontend:latest
-DOCKER_CREDENTIALS: References 'docker-hub-creds' stored in Jenkins
+- BACKEND_IMAGE: Automatically set as rynorbu11/taskflow-backend:latest
+- FRONTEND_IMAGE: Automatically set as rynorbu11/taskflow-frontend:latest
+- DOCKER_CREDENTIALS: References 'docker-hub-creds' stored in Jenkins
 
-Jenkins Credentials Required:
+**Jenkins Credentials Required:**
 
-Credential ID: github-creds
-Type: Username with password
-Username: Rynorbu
-Password: GitHub Personal Access Token (with repo and admin:repo_hook scopes)
+- Credential ID: github-creds
+- Type: Username with password
+- Username: Rynorbu
+- Password: GitHub Personal Access Token (with repo and admin:repo_hook scopes)
 
-Credential ID: docker-hub-creds
-Type: Username with password
-Username: rynorbu11
-Password: Docker Hub access token
+- Credential ID: docker-hub-creds
+- Type: Username with password
+- Username: rynorbu11
+- Password: Docker Hub access token
 
 ---
 
@@ -139,13 +153,16 @@ Password: Docker Hub access token
 
 ### Challenge 1: Windows Shell Compatibility in Jenkins
 
-Problem Description:
+**Problem Description:**
+
 The initial Jenkins setup used Unix shell commands (sh) in the Jenkinsfile, which are incompatible with Windows environments. When the pipeline executed on a Windows machine running Jenkins natively, the system threw an error: "Cannot run program 'sh'" with exit code 127. This prevented the installation of dependencies and execution of tests.
 
-Root Cause:
+**Root Cause:**
+
 The Jenkinsfile was written using Unix/Linux shell syntax (sh command) assuming Jenkins would run on a Linux system. However, the deployment environment was Windows, which uses batch commands or PowerShell instead.
 
-Solution Implemented:
+**Solution Implemented:**
+
 All shell commands in the Jenkinsfile were replaced with batch commands using the bat keyword. The migration included:
 - Changed: sh 'npm install' to bat 'npm install'
 - Changed: sh 'npm test' to bat 'npm test'
@@ -156,13 +173,16 @@ This solution ensured the pipeline could execute successfully on the Windows mac
 
 ### Challenge 2: Jenkins Docker Access on Windows
 
-Problem Description:
+**Problem Description:**
+
 After fixing the shell compatibility issue, the pipeline failed at the Docker build stage with error: "docker: not found". Jenkins was running natively on Windows but could not access Docker commands even though Docker Desktop was installed.
 
-Root Cause:
+**Root Cause:**
+
 Jenkins running in a Docker container could not access the Docker daemon on the host machine. The containerized Jenkins instance was isolated from the host Docker socket.
 
-Solution Implemented:
+**Solution Implemented:**
+
 Instead of running Jenkins inside a Docker container, Jenkins was installed and run natively on Windows as a standalone application. This approach provided:
 - Direct access to Docker executable installed on Windows
 - Ability to call Docker commands without socket mounting complications
@@ -176,13 +196,16 @@ Jenkins installation steps:
 
 ### Challenge 3: Git Authentication and Network Connectivity
 
-Problem Description:
+**Problem Description:**
+
 The Jenkins pipeline failed to clone the GitHub repository with error: "Could not resolve host: github.com". This occurred after configuring GitHub Personal Access Token (PAT) for authentication.
 
-Root Cause:
+**Root Cause:**
+
 Two potential causes were identified: either network connectivity was temporarily unavailable, or the GitHub credentials in Jenkins were not properly configured to use the PAT in the checkout stage.
 
-Solution Implemented:
+**Solution Implemented:**
+
 Updated the Jenkinsfile checkout stage to explicitly reference the GitHub credentials:
 - Added credentialsId parameter to the Git configuration
 - Specified credential ID as 'github-creds' matching Jenkins stored credentials
@@ -197,13 +220,16 @@ userRemoteConfigs: [[
 
 ### Challenge 4: Java Version Compatibility
 
-Problem Description:
+**Problem Description:**
+
 When starting Jenkins with the standard command java -jar jenkins.war, the system threw an error: "Running with Java 24 from C:\Program Files\Java\jdk-24, which is not fully supported." Jenkins required either Java 21 or Java 25 for full compatibility.
 
-Root Cause:
+**Root Cause:**
+
 Java 24 was installed on the system, which is not a long-term support (LTS) version. Jenkins requires stable LTS versions for the best compatibility and support.
 
-Solution Implemented:
+**Solution Implemented:**
+
 Executed Jenkins with the --enable-future-java flag to bypass the version check:
 java -jar jenkins.war --enable-future-java
 
@@ -307,17 +333,17 @@ This section provides photographic evidence of successful pipeline execution, te
 
 **Performance Metrics:**
 
-Build Execution Time: Complete pipeline execution from checkout to Docker push completed successfully
-Test Execution: 1 test executed, 1 test passed, 0 tests failed
-Deployment Status: Both backend and frontend images successfully pushed to Docker Hub
-Docker Image Status: taskflow-backend:latest and taskflow-frontend:latest available on Docker Hub
+- Build Execution Time: Complete pipeline execution from checkout to Docker push completed successfully
+- Test Execution: 1 test executed, 1 test passed, 0 tests failed
+- Deployment Status: Both backend and frontend images successfully pushed to Docker Hub
+- Docker Image Status: taskflow-backend:latest and taskflow-frontend:latest available on Docker Hub
 
 **Deployment Verification Table:**
 
 Artifact | Status | Location
 ---|---|---
-Backend Docker Image | Deployed | https://hub.docker.com/r/rynorbu11/taskflow-backend
-Frontend Docker Image | Deployed | https://hub.docker.com/r/rynorbu11/taskflow-frontend
+Backend Docker Image | Deployed | https://hub.docker.com/r/rynorbu11/taskflow-backend/tags
+Frontend Docker Image | Deployed | https://hub.docker.com/r/rynorbu11/taskflow-frontend/tags
 Jenkins Build | Successful | http://localhost:8080/job/todo-pipeline/
 Test Results | Passed | Jenkins UI - Test Results Section
 GitHub Repository | Active | https://github.com/Rynorbu/02230297_Assignment_2_DSO101
@@ -325,94 +351,28 @@ Jenkinsfile | Published | GitHub Main Branch
 
 ---
 
-## **Deliverables and Screenshots**
-
-### Screenshots Provided
-
-Screenshot 1: Jenkins Build Success Overview
-Shows the successful completion of build #3 with timestamp and build duration. The overview page displays the build status as successful with blue indicator.
-
-Screenshot 2: Pipeline Stages Visualization
-Displays all seven pipeline stages completed successfully with green status indicators. Shows stage execution order: Checkout, Install Dependencies, Run Tests, Build Backend Image, Build Frontend Image, Push Backend to Docker Hub, and Push Frontend to Docker Hub.
-
-Screenshot 3: Jest Test Results
-Demonstrates the test execution results showing: Total tests 1, Tests passed 1, Tests failed 0, execution time recorded in milliseconds. The JUnit report was successfully published to Jenkins.
-
-Screenshot 4: Jenkins Console Output
-Shows the detailed execution log including npm install execution, npm test output with the passing test, and Docker build command execution.
-
-Screenshot 5: Docker Hub Backend Repository
-Shows the taskflow-backend repository on Docker Hub with latest tag and metadata including last update timestamp and image details.
-
-Screenshot 6: Docker Hub Frontend Repository
-Shows the taskflow-frontend repository on Docker Hub with latest tag and metadata including last update timestamp and image details.
-
-Screenshot 7: GitHub Repository
-Displays the GitHub repository https://github.com/Rynorbu/02230297_Assignment_2_DSO101 with all source files including the Jenkinsfile and project structure.
-
-Screenshot 8: Jenkinsfile in GitHub
-Shows the complete Jenkinsfile content displaying all seven stages and pipeline configuration in the GitHub repository.
-
-### Artifacts Generated
-
-Jenkinsfile Location: https://github.com/Rynorbu/02230297_Assignment_2_DSO101/blob/main/Jenkinsfile
-Docker Image URLs:
-- Backend: https://hub.docker.com/r/rynorbu11/taskflow-backend
-- Frontend: https://hub.docker.com/r/rynorbu11/taskflow-frontend
-- GitHub Repository: https://github.com/Rynorbu/02230297_Assignment_2_DSO101
-- Jenkins Build Logs: http://localhost:8080/job/todo-pipeline/ (local access)
-
 ## Key Benefits of the CI/CD Implementation
 
-Automation:
+**Automation:**
 The pipeline completely eliminates manual build, test, and deployment steps. Developers push code to GitHub and the pipeline handles the rest automatically.
 
-Consistency:
+**Consistency:**
 Every build follows the same process and uses identical environments, ensuring consistent results regardless of who triggers the build.
 
-Early Detection:
+**Early Detection:**
 Tests run automatically on every build, catching bugs and issues before code reaches production.
 
-Quality Assurance:
+**Quality Assurance:**
 Failed tests prevent progression to the deployment stages, ensuring only tested code reaches Docker Hub and production.
 
-Scalability:
+**Scalability:**
 The microservices architecture with separate frontend and backend repositories allows independent scaling of components based on demand.
 
-Auditability:
+**Auditability:**
 Complete build history, logs, and test results are maintained in Jenkins, providing an audit trail for compliance and debugging.
 
-Docker Integration:
+**Docker Integration:**
 Containerization ensures the application runs identically across development, testing, and production environments.
-
-## Technologies and Tools Used
-
-Programming Languages:
-- JavaScript/Node.js for backend API development
-- JavaScript/React for frontend user interface development
-- Groovy for Jenkins pipeline scripting
-
-Build and Automation Tools:
-- Jenkins 2.x for continuous integration and deployment
-- npm for JavaScript package management and build tasks
-- Maven/Gradle patterns for structured builds
-
-Testing Framework:
-- Jest 29.5.0 for unit testing
-- jest-junit 16.0.0 for JUnit XML report generation
-
-Containerization:
-- Docker for application containerization
-- Docker Compose for local development orchestration
-- Docker Hub for image registry and distribution
-
-Version Control:
-- Git for distributed version control
-- GitHub for repository hosting and collaboration
-- GitHub Personal Access Token (PAT) for authentication
-
-Database:
-- PostgreSQL 15-alpine for data persistence
 
 ## Conclusion
 
@@ -425,6 +385,5 @@ The project successfully fulfills all requirements for the DSO101 assignment and
 ## Repository Links
 
 - GitHub Repository: https://github.com/Rynorbu/02230297_Assignment_2_DSO101
-- Docker Hub Backend: https://hub.docker.com/r/rynorbu11/taskflow-backend
-- Docker Hub Frontend: https://hub.docker.com/r/rynorbu11/taskflow-frontend
-- Jenkins Server: http://localhost:8080 (local access)
+- Docker Hub Backend: https://hub.docker.com/r/rynorbu11/taskflow-backend/tags
+- Docker Hub Frontend: https://hub.docker.com/r/rynorbu11/taskflow-frontend/tags
