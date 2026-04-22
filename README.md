@@ -45,7 +45,9 @@ The Jenkins pipeline executes seven sequential stages to automate the entire CI/
 
 **Stage 1: Checkout**
 
-This stage clones the source code from the GitHub repository on the main branch. It establishes connection using GitHub credentials and fetches the latest commit. The checkout ensures that Jenkins has the most recent code version before proceeding to build and test stages. Repository URL is configured as: **https://github.com/Rynorbu/02230297_Assignment_2_DSO101.git**
+This stage clones the source code from the GitHub repository on the main branch. It establishes connection using GitHub credentials and fetches the latest commit. The checkout ensures that Jenkins has the most recent code version before proceeding to build and test stages. 
+
+Repository URL is configured as: **https://github.com/Rynorbu/02230297_Assignment_2_DSO101.git**
 
 **Stage 2: Install Dependencies**
 
@@ -82,16 +84,6 @@ Similarly, the frontend image is pushed to Docker Hub after authentication. The 
 "test": "jest --ci --reporters=default --reporters=jest-junit"
 ```
 
-**Command Flags:**
-- `--ci`: Continuous Integration mode (optimized for Jenkins)
-- `--reporters=default`: Console output for logs
-- `--reporters=jest-junit`: Generates junit.xml for Jenkins dashboard
-
-**Test File:**
-- Location: app.test.js
-- Current Test: Validates Jest framework integration
-- Results: 1 test executed, 1 passed, 0 failed
-
 **Test Execution Flow:**
 1. Runs in "Run Tests" stage after dependencies install
 2. Generates junit.xml report
@@ -125,27 +117,7 @@ The deployment utilizes separate Docker Hub repositories for independent scaling
 - Separate versioning and release cycles
 - Enables team-based microservices architecture
 - Simplified rollback if issues occur
-- Easy horizontal scaling for high-traffic components
-
-## Environment Variables and Configuration
-
-The Jenkinsfile uses the following environment variables that should be configured:
-
-- BACKEND_IMAGE: Automatically set as rynorbu11/taskflow-backend:latest
-- FRONTEND_IMAGE: Automatically set as rynorbu11/taskflow-frontend:latest
-- DOCKER_CREDENTIALS: References 'docker-hub-creds' stored in Jenkins
-
-**Jenkins Credentials Required:**
-
-- Credential ID: github-creds
-- Type: Username with password
-- Username: Rynorbu
-- Password: GitHub Personal Access Token (with repo and admin:repo_hook scopes)
-
-- Credential ID: docker-hub-creds
-- Type: Username with password
-- Username: rynorbu11
-- Password: Docker Hub access token
+- Easy horizontal scaling for high-traffic components 
 
 ---
 
@@ -217,23 +189,6 @@ userRemoteConfigs: [[
   url: 'https://github.com/Rynorbu/02230297_Assignment_2_DSO101.git',
   credentialsId: 'github-creds'
 ]]
-
-### Challenge 4: Java Version Compatibility
-
-**Problem Description:**
-
-When starting Jenkins with the standard command java -jar jenkins.war, the system threw an error: "Running with Java 24 from C:\Program Files\Java\jdk-24, which is not fully supported." Jenkins required either Java 21 or Java 25 for full compatibility.
-
-**Root Cause:**
-
-Java 24 was installed on the system, which is not a long-term support (LTS) version. Jenkins requires stable LTS versions for the best compatibility and support.
-
-**Solution Implemented:**
-
-Executed Jenkins with the --enable-future-java flag to bypass the version check:
-java -jar jenkins.war --enable-future-java
-
-This allowed Jenkins to run on Java 24 while acknowledging that it is not fully supported but functional for development purposes. For production environments, installing Java 21 LTS would be the recommended approach.
 
 ---
 
